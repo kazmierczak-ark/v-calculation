@@ -19,7 +19,7 @@ namespace VCalculateApi.Services
             port = Environment.GetEnvironmentVariable("DB_PORT")==null ? port : Convert.ToInt32(Environment.GetEnvironmentVariable("DB_PORT"));            
         }
 
-        public async Task<(int sum, float avg)> RetrieveData(string name, int? since, int? to)
+        public async Task<(float sum, float avg)> RetrieveData(string name, int? since, int? to)
         {
             using (var client = InfluxDBClientFactory.CreateV1($"http://{host}:{port}", null, null, bucket, retentionPolicy))
             {
@@ -42,7 +42,7 @@ namespace VCalculateApi.Services
 
                 if (dataSum.Count > 0 && dataAvg.Count > 0)
                 {
-                    return (sum: Convert.ToInt32(dataSum[0].Records[0].GetValue()), avg: Convert.ToSingle(dataAvg[0].Records[0].GetValue())); 
+                    return (sum: Convert.ToSingle(dataSum[0].Records[0].GetValue()), avg: Convert.ToSingle(dataAvg[0].Records[0].GetValue())); 
                 }
                 else 
                 {

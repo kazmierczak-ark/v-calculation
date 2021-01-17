@@ -47,6 +47,6 @@ components:
           type: number
           format: float
         sum:
-          type: integer
-          format: int32
+          type: number
+          format: float
       additionalProperties: false
