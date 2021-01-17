@@ -10,9 +10,18 @@ namespace VCalculateApi.Services
         const string bucket = "v_timeseries";
         const string retentionPolicy = "autogen";
 
+        private readonly string host = "localhost";
+        private readonly int port = 8086; 
+
+        public StorageClient()
+        {
+            host = Environment.GetEnvironmentVariable("DB_HOST")==null ? host : Environment.GetEnvironmentVariable("DB_HOST");
+            port = Environment.GetEnvironmentVariable("DB_PORT")==null ? port : Convert.ToInt32(Environment.GetEnvironmentVariable("DB_PORT"));            
+        }
+
         public async Task<(int sum, float avg)> RetrieveData(string name, int? since, int? to)
         {
-            using (var client = InfluxDBClientFactory.CreateV1("http://localhost:8086", null, null, bucket, retentionPolicy))
+            using (var client = InfluxDBClientFactory.CreateV1($"http://{host}:{port}", null, null, bucket, retentionPolicy))
             {
                 var query = $"from(bucket: \"{bucket}/{retentionPolicy}\")";
                 query = string.Concat(query, $" |> range(start: time(v: {(since != null ? toNanoSecond(since.Value) : 0)}))");

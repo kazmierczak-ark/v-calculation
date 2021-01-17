@@ -22,7 +22,7 @@ namespace VCalculateApi.Controllers
 
         [HttpGet]
         [Route("{name}")]
-        public async Task<ActionResult<Aggregate>> Get([FromRoute, Required] string name, [FromQuery] int? since, [FromQuery] int? to)
+        public async Task<ActionResult<Aggregate>> Get([FromRoute, Required] string name, [FromQuery] int? since = null, [FromQuery] int? to = null)
         {
             var (sum, avg) = await _storageClient.RetrieveData(name, since, to);
             return Ok(new Aggregate {sum = sum, avg = avg});
