@@ -1,0 +1,52 @@
+openapi: 3.0.1
+info:
+  title: VCalculateApi
+  version: v1
+paths:
+  '/Aggregate/{name}':
+    get:
+      tags:
+        - Aggregate
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: since
+          in: query
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+        - name: to
+          in: query
+          schema:
+            type: integer
+            format: int32
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Aggregate'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Aggregate'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Aggregate'
+components:
+  schemas:
+    Aggregate:
+      type: object
+      properties:
+        avg:
+          type: number
+          format: float
+        sum:
+          type: integer
+          format: int32
+      additionalProperties: false
